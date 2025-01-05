@@ -1,0 +1,17 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Core\Contracts\MiddlewareContract;
+use App\Core\Request\Request;
+use App\Core\Response\Response;
+
+class {{class}} implements MiddlewareContract
+{
+    public function handle(Request $request, callable $next): Response
+    {
+        // Middleware logic here
+
+        return $next($request);
+    }
+}

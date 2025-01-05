@@ -1,0 +1,10 @@
+<?php
+
+namespace {{namespace}};
+
+{{extraUse}}
+
+class {{controllerName}} extends Controller
+{
+
+}

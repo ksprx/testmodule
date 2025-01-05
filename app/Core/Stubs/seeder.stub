@@ -1,0 +1,12 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Core\Database\Seeders\Seeder;
+
+class {{seederName}} extends Seeder
+{
+    public function run()
+    {
+    }
+}

@@ -1,0 +1,6 @@
+<?php
+use App\Core\Facades\Graphql;
+
+Graphql::query("index" , function () {
+    return "Hello {{moduleName}}";
+})->type(\GraphQL\Type\Definition\Type::string());

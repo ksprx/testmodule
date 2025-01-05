@@ -1,0 +1,16 @@
+<?php
+
+namespace {{namespace}};
+
+use App\Core\Facades\Graphql;
+use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\Type;
+
+class {{typeName}}
+{
+    static function build(): ObjectType
+    {
+        /*   return GraphqlType Object  */
+    }
+
+}

@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class {{commandName}} extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected static string $defaultName = 'app:{{commandNameLower}}';
+
+    public static function getDefaultName(): ?string
+    {
+        return self::$defaultName;
+    }
+
+    protected function configure(): void
+    {
+        $this
+            ->setDescription('Command description');
+    }
+
+    /**
+     * Execute the console command.
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        return Command::SUCCESS;
+    }
+}

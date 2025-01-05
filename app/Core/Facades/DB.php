@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Core\Facades;
+
+/**
+ * Class DB
+ *
+ * @method static \Illuminate\Database\Query\Builder table(string $table)
+ * @method static \Illuminate\Database\Query\Builder from(string $table)
+ * @method static \Illuminate\Database\Query\Builder select(array|string $columns = ['*'])
+ * @method static \Illuminate\Database\Query\Builder selectRaw(string $expression, array $bindings = [])
+ * @method static \Illuminate\Database\Query\Builder addSelect(array|string $columns)
+ * @method static \Illuminate\Database\Query\Builder selectSub(\Illuminate\Database\Query\Builder|\Closure|string $query, string $as)
+ * @method static \Illuminate\Database\Query\Builder where(string $column, string $operator = '=', mixed $value = null)
+ * @method static \Illuminate\Database\Query\Builder orWhere(string $column, string $operator = '=', mixed $value = null)
+ * @method static \Illuminate\Database\Query\Builder whereIn(string $column, array $values)
+ * @method static \Illuminate\Database\Query\Builder whereNotIn(string $column, array $values)
+ * @method static \Illuminate\Database\Query\Builder whereNull(string $column)
+ * @method static \Illuminate\Database\Query\Builder whereNotNull(string $column)
+ * @method static \Illuminate\Database\Query\Builder whereBetween(string $column, array $values)
+ * @method static \Illuminate\Database\Query\Builder whereNotBetween(string $column, array $values)
+ * @method static \Illuminate\Database\Query\Builder whereColumn(string $first, string $operator, string $second)
+ * @method static \Illuminate\Database\Query\Builder orWhereColumn(string $first, string $operator, string $second)
+ * @method static \Illuminate\Database\Query\Builder orderBy(string $column, string $direction = 'asc')
+ * @method static \Illuminate\Database\Query\Builder latest(string $column = 'created_at')
+ * @method static \Illuminate\Database\Query\Builder oldest(string $column = 'created_at')
+ * @method static \Illuminate\Database\Query\Builder limit(int $value)
+ * @method static \Illuminate\Database\Query\Builder offset(int $value)
+ * @method static \Illuminate\Database\Query\Builder take(int $value)
+ * @method static \Illuminate\Database\Query\Builder skip(int $value)
+ * @method static \Illuminate\Database\Query\Builder groupBy(string|array $columns)
+ * @method static \Illuminate\Database\Query\Builder having(string $column, string $operator, mixed $value)
+ * @method static \Illuminate\Database\Query\Builder orHaving(string $column, string $operator, mixed $value)
+ * @method static \Illuminate\Database\Query\Builder havingRaw(string $sql, array $bindings = [])
+ * @method static \Illuminate\Database\Query\Builder orHavingRaw(string $sql, array $bindings = [])
+ * @method static \Illuminate\Database\Query\Builder union(\Illuminate\Database\Query\Builder $query, bool $all = false)
+ * @method static \Illuminate\Database\Query\Builder unionAll(\Illuminate\Database\Query\Builder $query)
+ * @method static \Illuminate\Database\Query\Builder join(string $table, string $first, string $operator, string $second)
+ * @method static \Illuminate\Database\Query\Builder leftJoin(string $table, string $first, string $operator, string $second)
+ * @method static \Illuminate\Database\Query\Builder rightJoin(string $table, string $first, string $operator, string $second)
+ * @method static \Illuminate\Database\Query\Builder crossJoin(string $table)
+ * @method static \Illuminate\Database\Query\Builder insert(array $values)
+ * @method static int insertGetId(array $values, string $sequence = null)
+ * @method static \Illuminate\Database\Query\Builder update(array $values)
+ * @method static int increment(string $column, int $amount = 1)
+ * @method static int decrement(string $column, int $amount = 1)
+ * @method static bool delete()
+ * @method static bool forceDelete()
+ * @method static \Illuminate\Database\Query\Builder truncate()
+ * @method static \Illuminate\Database\Query\Builder count()
+ * @method static \Illuminate\Database\Query\Builder avg(string $column)
+ * @method static \Illuminate\Database\Query\Builder sum(string $column)
+ * @method static \Illuminate\Database\Query\Builder min(string $column)
+ * @method static \Illuminate\Database\Query\Builder max(string $column)
+ * @method static bool exists()
+ * @method static bool isntEmpty()
+ * @method static \Illuminate\Database\Query\Builder raw(string $expression)
+ * @method static \Illuminate\Database\Query\Builder whereRaw(string $sql, array $bindings = [])
+ * @method static \Illuminate\Database\Query\Builder orWhereRaw(string $sql, array $bindings = [])
+ * @method static \Illuminate\Database\Query\Builder whereExists(\Closure $callback)
+ * @method static \Illuminate\Database\Query\Builder orWhereExists(\Closure $callback)
+ * @method static \Illuminate\Database\Query\Builder whereNotExists(\Closure $callback)
+ * @method static \Illuminate\Database\Query\Builder orWhereNotExists(\Closure $callback)
+ * @method static \Illuminate\Database\Query\Builder whereJsonContains(string $column, mixed $value)
+ * @method static \Illuminate\Database\Query\Builder whereJsonLength(string $column, string $operator = '=', int $value = null)
+ * @method static \Illuminate\Database\Query\Builder whereFullText(string $column, string $value)
+ * @method static \Illuminate\Database\Query\Builder whereMonth(string $column, int $month)
+ * @method static \Illuminate\Database\Query\Builder whereDay(string $column, int $day)
+ * @method static \Illuminate\Database\Query\Builder whereYear(string $column, int $year)
+ * @method static \Illuminate\Database\Query\Builder whereTime(string $column, string $operator, string $value)
+ * @method static \Illuminate\Database\Query\Builder onDuplicateKeyUpdate(array $values)
+ * @method static \Illuminate\Database\Query\Builder havingExists(\Closure $callback)
+ * @method static \Illuminate\Database\Query\Builder orHavingExists(\Closure $callback)
+ * @method static \Illuminate\Database\Query\Builder whereLike(string $column, string $value)
+ * @method static \Illuminate\Database\Query\Builder whereNotLike(string $column, string $value)
+ */
+class DB extends Facade
+{
+    protected static function getFacadeAccessor(): string
+    {
+        return 'db';
+    }
+}

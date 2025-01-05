@@ -1,0 +1,37 @@
+<?php
+
+namespace {{moduleNamespace}};
+
+use App\Http\Providers\ServiceProvider;
+
+class {{moduleName}} extends ServiceProvider
+{
+    public function register()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/Migrations');
+    }
+
+    public function boot()
+    {
+        $migrationPath = __DIR__ . '/migrations';
+        if (is_dir($migrationPath)) {
+            $this->loadMigrationsFrom($migrationPath);
+        }
+    }
+
+    protected function loadMigrationsFrom(string $path)
+    {
+        if (is_dir($path)) {
+            foreach (glob($path . '/*.php') as $migrationFile) {
+                require_once $migrationFile;
+                $className = pathinfo($migrationFile, PATHINFO_FILENAME);
+                if (class_exists($className)) {
+                    $migrationInstance = new $className();
+                    if (method_exists($migrationInstance, 'up')) {
+                        $migrationInstance->up();
+                    }
+                }
+            }
+        }
+    }
+}
