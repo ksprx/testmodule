@@ -142,7 +142,13 @@ class SchemaManager
 
     protected function invokeCallable($callable, array $params)
     {
-        $reflection = is_array($callable) ? new \ReflectionMethod($callable[0], $callable[1]) : new \ReflectionFunction($callable);
+        if (is_array($callable)) {
+            $reflection = new \ReflectionMethod($callable[0], $callable[1]);
+            $object = is_object($callable[0]) ? $callable[0] : null;
+            $dependencies = $this->resolveDependencies($reflection, $params);
+            return $reflection->invokeArgs($object, $dependencies);
+        }
+        $reflection = new \ReflectionFunction($callable);
         $dependencies = $this->resolveDependencies($reflection, $params);
         return $reflection->invokeArgs($dependencies);
     }
