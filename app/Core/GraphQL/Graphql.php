@@ -36,10 +36,10 @@ class Graphql
      * Define a query with a resolver
      *
      * @param string $name
-     * @param callable $resolver
+     * @param  $resolver
      * @return SchemaDefinition
      */
-    public function query(string $name, callable $resolver): SchemaDefinition
+    public function query(string $name, $resolver): SchemaDefinition
     {
         $currentGroup = end($this->groupStack) ?: null;
         $query = new SchemaDefinition($name, $resolver, $currentGroup);
@@ -65,10 +65,10 @@ class Graphql
      * Define a mutation with a resolver
      *
      * @param string $name
-     * @param callable $resolver
+     * @param  $resolver
      * @return SchemaDefinition
      */
-    public function mutation(string $name, callable $resolver): SchemaDefinition
+    public function mutation(string $name, $resolver): SchemaDefinition
     {
         $currentGroup = end($this->groupStack) ?: null;
         $mutation = new SchemaDefinition($name, $resolver, $currentGroup);
