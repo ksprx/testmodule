@@ -29,7 +29,7 @@ class MakeModelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $name = $input->getArgument('name');
+        $name = ucwords($input->getArgument('name'));
         $moduleName = ucwords($input->getOption('module'));
         $path = "app/Models";
         $namespace = "App\\Models";
