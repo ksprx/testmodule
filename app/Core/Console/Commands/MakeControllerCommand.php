@@ -32,7 +32,7 @@ class MakeControllerCommand extends Command
         $name = $input->getArgument('name');
         $isResource = $input->getOption('resource');
         $modelName = $input->getOption('model');
-        $moduleName = $input->getOption('module');
+        $moduleName = ucwords($input->getOption('module'));
         $controllerName = ucfirst($name) . 'Controller';
         $path = "app/Http/Controllers";
         $namespace = "App\\Http\\Controllers";

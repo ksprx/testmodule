@@ -29,7 +29,7 @@ class MakeRequestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $moduleName = $input->getOption('module');
+        $moduleName = ucwords($input->getOption('module'));
         $path = "app/Http/Requests";
         $namespace = "App\\Http\\Requests";
         if ($moduleName) {

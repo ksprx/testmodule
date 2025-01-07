@@ -28,7 +28,7 @@ class MakeMigrationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $moduleName = $input->getOption('module');
+        $moduleName = ucwords($input->getOption('module'));
         $path = "database/migrations";
         if ($moduleName) {
             $pathModule = "app/Modules/{$moduleName}";

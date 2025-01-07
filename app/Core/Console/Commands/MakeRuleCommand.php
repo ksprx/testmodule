@@ -29,7 +29,7 @@ class MakeRuleCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $moduleName = $input->getOption('module');
+        $moduleName = ucwords($input->getOption('module'));
         $name = ucwords($name);
         $path = "app/Core/Validation/Rules";
         $namespace = "App\\Core\\Validation\\Rules";

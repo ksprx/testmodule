@@ -28,7 +28,7 @@ class MakeTypeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $moduleName = $input->getOption('module');
+        $moduleName = ucwords($input->getOption('module'));
         $typeName = ucfirst($name) . 'Type';
         $path = "app/Http/GraphQL/Types";
         $namespace = "App\\Http\\GraphQL\\Types";

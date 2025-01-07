@@ -29,7 +29,7 @@ class MakeMiddlewareCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
-        $moduleName = $input->getOption('module');
+        $moduleName = ucwords($input->getOption('module'));
         $path = "app/Http/Middlewares";
         $namespace = "App\\Http\\Middlewares";
         if ($moduleName) {
