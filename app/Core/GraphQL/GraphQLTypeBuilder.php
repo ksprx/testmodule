@@ -11,9 +11,14 @@ class GraphQLTypeBuilder
 
     public function __construct(string $name, string $description = '', array $group = null)
     {
+
         if ($group) {
             $prefix = $group['prefix'] ?? '';
-            $this->config['name'] = $prefix ? strtolower($prefix) . $name : $name;
+            $suffix = $group['suffix'] ?? '';
+            $this->config['name'] = $prefix ? $prefix . $name : $name;
+            if ($suffix) {
+                $this->config['name'] .= $suffix;
+            }
         } else {
             $this->config['name'] = $name;
         }

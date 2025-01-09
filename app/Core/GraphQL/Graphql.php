@@ -22,6 +22,7 @@ class Graphql
 
         $newGroup = [
             'prefix' => @$currentGroup['prefix'] . (@$options['prefix'] ?? ''),
+            'suffix' => @$currentGroup['suffix'] . (@$options['suffix'] ?? ''),
             'middleware' => array_merge($currentGroup['middleware'] ?? [], $options['middleware'] ?? []),
         ];
 

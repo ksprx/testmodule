@@ -26,7 +26,11 @@ class SchemaDefinition
 
         if ($group) {
             $prefix = $group['prefix'] ?? '';
-            $this->name = $prefix ? strtolower($prefix) . $name : $name;
+            $suffix = $group['suffix'] ?? '';
+            $this->name = $prefix ? $prefix . $name : $name;
+            if($suffix){
+                $this->name.= $suffix;
+            }
             $this->middlewares($group['middleware'] ?? []);
         } else {
             $this->name = $name;
