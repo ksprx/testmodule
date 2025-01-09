@@ -6,6 +6,7 @@ use App\Core\Migration\Migration;
 use Illuminate\Database\Capsule\Manager as DB;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateRollbackCommand extends Command
@@ -21,7 +22,8 @@ class MigrateRollbackCommand extends Command
     {
         $this
             ->setDescription('Rollback database migrations')
-            ->setHelp('This command allows you to rollback all database migrations that have been executed.');
+            ->setHelp('This command allows you to rollback all database migrations that have been executed.')
+            ->addOption('module', 'p', InputOption::VALUE_OPTIONAL, 'Specify a module for resource binding');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -31,6 +33,15 @@ class MigrateRollbackCommand extends Command
             return Command::SUCCESS;
         }
         $migrationsPath = AMADAY_PATH . '/database/migrations';
+        $moduleName = ucwords($input->getOption('module'));
+        if($moduleName) {
+            $migrationsPath = "app/Modules/{$moduleName}/Migrations";
+            $pathModule = "app/Modules/{$moduleName}";
+            if (!is_dir($pathModule)) {
+                $output->writeln("<error>Module {$moduleName} Not Exist</error>");
+                return Command::FAILURE;
+            }
+        }
         $executedMigrations = Migration::orderByDesc('id')->pluck('migration')->toArray();
         foreach ($executedMigrations as $fileName) {
             $file = $migrationsPath . DIRECTORY_SEPARATOR . $fileName . ".php";
