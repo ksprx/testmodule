@@ -7,6 +7,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateCommand extends Command
@@ -22,12 +23,22 @@ class MigrateCommand extends Command
     {
         $this
             ->setDescription('Run database migrations')
-            ->setHelp('This command allows you to run all database migrations that have not been executed yet.');
+            ->setHelp('This command allows you to run all database migrations that have not been executed yet.')
+            ->addOption('module', 'p', InputOption::VALUE_OPTIONAL, 'Specify a module for resource binding');;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrationsPath = AMADAY_PATH . '/database/migrations';
+        $moduleName = ucwords($input->getOption('module'));
+        if($moduleName){
+            $migrationsPath = "app/Modules/{$moduleName}/database/migrations";
+            $pathModule = "app/Modules/{$moduleName}";
+            if (!is_dir($pathModule)) {
+                $output->writeln("<error>Module {$moduleName} Not Exist</error>");
+                return Command::FAILURE;
+            }
+        }
         if (!DB::schema()->hasTable('migrations')) {
             DB::schema()->create('migrations', function (Blueprint $table) {
                 $table->id();
