@@ -3,12 +3,13 @@
 namespace {{namespace}};
 
 use App\Core\Facades\Graphql;
+use App\Core\GraphQL\BaseType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 
-class {{typeName}}
+class {{typeName}} extends BaseType
 {
-    static function build(): ObjectType
+    protected static function defineType(): ObjectType
     {
         /*   return GraphqlType Object  */
     }
