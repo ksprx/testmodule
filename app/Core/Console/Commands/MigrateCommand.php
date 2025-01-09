@@ -24,7 +24,7 @@ class MigrateCommand extends Command
         $this
             ->setDescription('Run database migrations')
             ->setHelp('This command allows you to run all database migrations that have not been executed yet.')
-            ->addOption('module', 'p', InputOption::VALUE_OPTIONAL, 'Specify a module for resource binding');;
+            ->addOption('module', 'p', InputOption::VALUE_OPTIONAL, 'Specify a module for resource binding');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -32,7 +32,7 @@ class MigrateCommand extends Command
         $migrationsPath = AMADAY_PATH . '/database/migrations';
         $moduleName = ucwords($input->getOption('module'));
         if($moduleName){
-            $migrationsPath = "app/Modules/{$moduleName}/database/migrations";
+            $migrationsPath = "app/Modules/{$moduleName}/Migrations";
             $pathModule = "app/Modules/{$moduleName}";
             if (!is_dir($pathModule)) {
                 $output->writeln("<error>Module {$moduleName} Not Exist</error>");
