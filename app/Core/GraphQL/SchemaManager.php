@@ -68,7 +68,7 @@ class SchemaManager
             if (!empty($schemas[$type])) {
                 $objectTypes[$type] = new ObjectType([
                     'name' => ucfirst($type),
-                    'fields' => $this->buildFields($schemas[$type]),
+                    'fields' => ($type != 'type') ? $this->buildFields($schemas[$type]) : $schemas[$type],
                 ]);
             }
         }
