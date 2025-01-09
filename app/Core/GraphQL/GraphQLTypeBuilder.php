@@ -9,11 +9,11 @@ class GraphQLTypeBuilder
 {
     private $config = [];
 
-    public function __construct(string $name, string $description = '' , array $group = null)
+    public function __construct(string $name, string $description = '', array $group = null)
     {
         if ($group) {
             $prefix = $group['prefix'] ?? '';
-            $this->config['name'] = $prefix ? strtolower($prefix) . '_' . $name : $name;;
+            $this->config['name'] = $prefix ? strtolower($prefix) . $name : $name;
         } else {
             $this->config['name'] = $name;
         }

@@ -53,7 +53,7 @@ class SchemaManager
     protected function includeSchema(string $schemaFile, string $moduleName): void
     {
         if (file_exists($schemaFile)) {
-            Graphql::group(["prefix" => $moduleName], function () use ($schemaFile) {
+            Graphql::group(["prefix" => $moduleName . "_"], function () use ($schemaFile) {
                 require_once $schemaFile;
             });
         } else {
@@ -175,7 +175,7 @@ class SchemaManager
 
     protected function extractModulesFromQuery(): array
     {
-        preg_match_all('/\b([a-zA-Z0-9_]+)_\w+\b|\b(\w+)\b/', $this->request->graphqlQuery(), $matches);
-        return array_unique(array_merge($matches[1] ?? [], $matches[2] ?? []));
+        preg_match_all('/\b([a-zA-Z0-9_]+?)_/', $this->request->graphqlQuery(), $matches);
+        return array_unique($matches[1] ?? []);
     }
 }
