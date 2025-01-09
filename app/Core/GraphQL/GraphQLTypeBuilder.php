@@ -9,14 +9,19 @@ class GraphQLTypeBuilder
 {
     private $config = [];
 
-    public function __construct(string $name, string $description = '')
+    public function __construct(string $name, string $description = '' , array $group = null)
     {
-        $this->config['name'] = $name;
+        if ($group) {
+            $prefix = $group['prefix'] ?? '';
+            $this->config['name'] = $prefix ? strtolower($prefix) . '_' . $name : $name;;
+        } else {
+            $this->config['name'] = $name;
+        }
         $this->config['description'] = $description;
     }
 
     /**
-     * افزودن فیلد به تایپ
+     * Add field
      *
      * @param string $name
      * @param Type $type
@@ -31,12 +36,6 @@ class GraphQLTypeBuilder
         ];
         return $this;
     }
-
-    /**
-     * ساخت تایپ
-     *
-     * @return ObjectType
-     */
 
     /**
      * Convert schema definition to array format for GraphQL

@@ -56,7 +56,8 @@ class Graphql
      */
     public function type(string $name, string $description = ''): GraphQLTypeBuilder
     {
-        $type = new GraphQLTypeBuilder($name, $description);
+        $currentGroup = end($this->groupStack) ?: null;
+        $type = new GraphQLTypeBuilder($name, $description,$currentGroup);
         $this->types[] = $type;
         return $type;
     }
