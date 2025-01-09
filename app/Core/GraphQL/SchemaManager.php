@@ -175,7 +175,20 @@ class SchemaManager
 
     protected function extractModulesFromQuery(): array
     {
-        preg_match_all('/\b([a-zA-Z0-9_]+?)_/', $this->request->graphqlQuery(), $matches);
+        $query = $this->request->graphqlQuery();
+        if (env('APP_ENV') === 'local') {
+            if (str_contains($query, '__schema') || str_contains($query, '__type') || str_contains($query, '__typename')) {
+                $modules = ["AMADAY_INDEX"];
+                $iterator = new \DirectoryIterator(MODULE_PATH);
+                foreach ($iterator as $item) {
+                    if ($item->isDir()) {
+                        $modules[] = $item->getFilename();
+                    }
+                }
+                return $modules;
+            }
+        }
+        preg_match_all('/\b([a-zA-Z0-9_]+?)_/', $query, $matches);
         return array_unique($matches[1] ?? []);
     }
 }
