@@ -43,6 +43,7 @@ class MigrateCommand extends Command
             DB::schema()->create('migrations', function (Blueprint $table) {
                 $table->id();
                 $table->string('migration');
+                $table->string('module')->nullable(true);
                 $table->integer('batch')->default(1);
             });
             $output->writeln("<info>Created migrations table.</info>");
@@ -60,7 +61,7 @@ class MigrateCommand extends Command
                     $migrationInstance = new $className();
                     if (method_exists($migrationInstance, 'up')) {
                         $migrationInstance->up();
-                        Migration::create(['migration' => $migrationName]);
+                        Migration::create(['migration' => $migrationName , 'module' => $moduleName ?? null]);
                         $output->writeln("<info>Migrated: {$migrationName}</info>");
                     }
                 }
