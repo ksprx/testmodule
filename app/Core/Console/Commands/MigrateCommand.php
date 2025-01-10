@@ -31,7 +31,7 @@ class MigrateCommand extends Command
     {
         $migrationsPath = AMADAY_PATH . '/database/migrations';
         $moduleName = ucwords($input->getOption('module'));
-        if($moduleName){
+        if ($moduleName) {
             $migrationsPath = "app/Modules/{$moduleName}/Migrations";
             $pathModule = "app/Modules/{$moduleName}";
             if (!is_dir($pathModule)) {
@@ -43,6 +43,7 @@ class MigrateCommand extends Command
             DB::schema()->create('migrations', function (Blueprint $table) {
                 $table->id();
                 $table->string('migration');
+                $table->string('module')->nullable();
                 $table->integer('batch')->default(1);
             });
             $output->writeln("<info>Created migrations table.</info>");
@@ -59,9 +60,14 @@ class MigrateCommand extends Command
                 if (class_exists($className)) {
                     $migrationInstance = new $className();
                     if (method_exists($migrationInstance, 'up')) {
-                        $migrationInstance->up();
-                        Migration::create(['migration' => $migrationName]);
-                        $output->writeln("<info>Migrated: {$migrationName}</info>");
+                        try {
+                            $migrationInstance->up();
+                            $output->writeln("<info>Migrated: {$migrationName}</info>");
+                            Migration::insert(['migration' => $migrationName, 'module' => ($moduleName ?? null)]);
+
+                        } catch (\Exception $e) {
+                            $output->writeln("<error>Error Migrate: {$migrationName} Message : {$e->getMessage()}</error>");
+                        }
                     }
                 }
             } else {
