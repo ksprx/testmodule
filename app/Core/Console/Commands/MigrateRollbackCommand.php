@@ -33,13 +33,13 @@ class MigrateRollbackCommand extends Command
             return Command::SUCCESS;
         }
         $migrationsPath = AMADAY_PATH . '/database/migrations';
-
+        $moduleName = null;
         $executedMigrations = Migration::orderByDesc('id')->select('migration', 'module')->get()->toArray();
         foreach ($executedMigrations as $executedMigration) {
             $fileName = $executedMigration['migration'];
             $file = $migrationsPath . DIRECTORY_SEPARATOR . $executedMigration['migration'] . ".php";
 
-            if ($executedMigration["migration"] != null) {
+            if ($executedMigration["module"] != null) {
                 $moduleName = ucwords($executedMigration["module"]);
                 $file = "app/Modules/{$moduleName}/Migrations" . DIRECTORY_SEPARATOR . $executedMigration['migration'] . ".php";
                 $pathModule = "app/Modules/{$moduleName}";
@@ -49,14 +49,15 @@ class MigrateRollbackCommand extends Command
                 }
             }
             require_once $file;
-
+            $extra_text = ($moduleName != null) ? " Module : {$moduleName}" : "";
             $className = $this->getMigrationClassName($file);
             if (class_exists($className)) {
                 $migrationInstance = new $className();
                 if (method_exists($migrationInstance, 'down')) {
                     $migrationInstance->down();
-                    Migration::where(['migration' => $fileName, 'module' => $executedMigration["migration"]])->delete();
-                    $output->writeln("<info>Migration rollbacked: {$fileName}</info>");
+                    Migration::where(['migration' => $fileName, 'module' => $executedMigration["module"]])->delete();
+
+                    $output->writeln(("<info>Migration rollbacked: {$fileName} $extra_text</info>"));
                 }
             }
         }
