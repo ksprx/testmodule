@@ -13,7 +13,9 @@ class Request
     protected string $path;
     protected Validator $validator;
 
-    public function __construct()
+    private static ?self $instance = null;
+
+    private function __construct()
     {
         $input = $this->getJsonInput();
         $this->graphqlQuery = $input['query'] ?? null;
@@ -26,19 +28,43 @@ class Request
         $this->validator = $this->makeValidator();
     }
 
-    private function getJsonInput()
+    private function __clone()
     {
-        return json_decode(file_get_contents('php://input'), true);
+    }
+
+    public function __wakeup()
+    {
+        throw new \Exception("Cannot unserialize a singleton.");
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
     }
 
     public static function capture(): self
     {
-        return new self();
+        return self::getInstance();
+    }
+
+    private function getJsonInput(): array
+    {
+        $input = file_get_contents('php://input');
+        if (empty($input)) {
+            return [];
+        }
+
+        $data = json_decode($input, true);
+        return is_array($data) ? $data : [];
     }
 
     public function isGraphQLRequest(): bool
     {
-        return !is_null($this->graphqlQuery);
+        return !empty($this->graphqlQuery);
     }
 
     public function graphqlQuery(): ?string
@@ -53,12 +79,18 @@ class Request
 
     public function graphqlVariable(string $key, $default = null)
     {
+        if (!$this->isGraphQLRequest()) {
+            return $default;
+        }
+
         return $this->graphqlVariables[$key] ?? $default;
     }
 
     public function header(string $key, $default = null)
     {
-        return $this->headers[$key] ?? $default;
+        $key = strtolower($key);
+        $headers = array_change_key_case($this->headers, CASE_LOWER);
+        return $headers[$key] ?? $default;
     }
 
     public function method(): string
@@ -73,11 +105,16 @@ class Request
 
     public function input(string $key = null, $default = null)
     {
-        if ($key === null) {
-            return $this->graphqlVariables;
+        if ($this->isGraphQLRequest()) {
+            $args = $this->graphqlVariables;
+        } else {
+            $args = array_merge($_GET, $_POST);
         }
 
-        $args = $this->extractArgumentsFromQuery();
+        if ($key === null) {
+            return $args;
+        }
+
         return $args[$key] ?? $default;
     }
 
@@ -91,14 +128,18 @@ class Request
         return [];
     }
 
-
     protected function makeValidator(): Validator
     {
         return new Validator($this);
     }
 
-    public function validate(): bool
+    public function validate(array $rules): bool
     {
-        return $this->validator->validate($this->rules());
+        return $this->validator->validate($rules);
+    }
+
+    public function getValidatetor(): Validator
+    {
+        return $this->validator;
     }
 }
