@@ -18,7 +18,8 @@
     "webonyx/graphql-php": "^15.19",
     "ext-grpc": "*",
     "google/protobuf": "^4.29",
-    "grpc/grpc": "^1.57"
+    "grpc/grpc": "^1.57",
+    "phpmailer/phpmailer": "^6.9"
   },
   "require-dev": {
     "phpunit/phpunit": "^11.5.2"
