@@ -41,7 +41,7 @@ class MakeModuleCommand extends Command
 
         $this->createSchemaFile($modulePath, $moduleName);
 
-        $this->updateComposerAutoload($moduleName);
+//        $this->updateComposerAutoload($moduleName);
 
         $output->writeln("<info>Module {$moduleName} created successfully.</info>");
         return Command::SUCCESS;
