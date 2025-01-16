@@ -28,6 +28,6 @@ class Min implements RuleContract
 
     public function message($attribute, $parameters = []): string
     {
-        // TODO: Implement message() method.
+        return "The {$attribute} field must be at least {$this->min} characters long or greater than or equal to {$this->min}.";
     }
 }
