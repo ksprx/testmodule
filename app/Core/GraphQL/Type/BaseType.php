@@ -9,7 +9,7 @@ abstract class BaseType
 {
     private static array $instances = [];
 
-    abstract protected static function defineType(): ObjectType|InputObjectType;
+    abstract protected static function defineType(): ObjectType|AmadayInputObjectType;
 
     public static function build()
     {

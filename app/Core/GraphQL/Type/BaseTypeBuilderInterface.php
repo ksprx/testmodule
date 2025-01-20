@@ -10,7 +10,7 @@ interface BaseTypeBuilderInterface
 {
     public function toArray(): array;
 
-    public function build(): ObjectType|InputObjectType;
+    public function build(): ObjectType|AmadayInputObjectType;
 
     public function addField(string $name, Type $type, string|array $desORvalidator = ''): static;
 }

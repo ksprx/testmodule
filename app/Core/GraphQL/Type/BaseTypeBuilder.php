@@ -37,5 +37,5 @@ abstract class BaseTypeBuilder implements BaseTypeBuilderInterface
         return $this->config;
     }
 
-    abstract public function build() : ObjectType|InputObjectType;
+    abstract public function build() : ObjectType|AmadayInputObjectType;
 }

@@ -73,9 +73,9 @@ class Graphql
      * @param string $description
      * @return GraphQLInputTypeBuilder
      */
-    public static function inputType(string $name, string $description = ''): GraphQLInputTypeBuilder
+    public static function inputType(string $name, string $validator = ''): GraphQLInputTypeBuilder
     {
-        return new GraphQLInputTypeBuilder($name, $description);
+        return new GraphQLInputTypeBuilder($name, $validator);
     }
     /**
      * Define a mutation with a resolver

@@ -7,6 +7,7 @@ use GraphQL\Type\Definition\Type;
 
 class GraphQLInputTypeBuilder extends BaseTypeBuilder
 {
+    protected array $validators = [];
     /**
      * Add field
      *
@@ -21,10 +22,11 @@ class GraphQLInputTypeBuilder extends BaseTypeBuilder
             'type' => $type,
             'description' => $validator,
         ];
+        if(!empty($validator)) $this->validators[$name] = $validator;
         return $this;
     }
 
-    public function build(): InputObjectType
+    public function build(): AmadayInputObjectType
     {
         if (!isset($this->config['name'])) {
             throw new \Exception("The 'name' property is required to build a GraphQL type.");
@@ -33,8 +35,9 @@ class GraphQLInputTypeBuilder extends BaseTypeBuilder
         if (!isset($this->config['fields']) || empty($this->config['fields'])) {
             throw new \Exception("The 'fields' property must be defined with at least one field.");
         }
-
-        return new InputObjectType($this->config);
+        $amaday_object = new AmadayInputObjectType($this->config);
+        $amaday_object->validate = $this->validators;
+        return $amaday_object;
     }
 
 }

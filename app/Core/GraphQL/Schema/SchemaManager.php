@@ -5,11 +5,11 @@ namespace App\Core\GraphQL\Schema;
 use App\Core\Application\Application;
 use App\Core\Exceptions\GraphqlError;
 use App\Core\Facades\Graphql;
+use App\Core\GraphQL\Type\AmadayInputObjectType;
 use App\Core\Pipeline\Pipeline;
 use App\Core\Request\Request;
 use App\Core\Validation\Validator;
 use App\Http\Services\DependencyResolver;
-use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
 
 class SchemaManager
@@ -104,7 +104,7 @@ class SchemaManager
     {
         if (isset($fieldConfig['args']) && is_array($fieldConfig['args'])) {
             foreach ($fieldConfig['args'] as $argName => $argConfig) {
-                if ($argConfig instanceof InputObjectType) {
+                if ($argConfig instanceof AmadayInputObjectType) {
                     $this->validateInputObject($argConfig, $params['args'][$argName] ?? []);
                 }
             }
@@ -127,25 +127,17 @@ class SchemaManager
             throw new GraphqlError("Validation Error", $validator->errors());
         }
     }
-    protected function validateInputObject(InputObjectType $inputType, array $inputData): void
+
+    protected function validateInputObject(AmadayInputObjectType $inputType, array $inputData): void
     {
-        $validationRules = $this->prepareInputObjectValidationRules($inputType);
+        if (empty($inputType->validate)) return;
+        $validationRules = $inputType->validate;
         $validator = new Validator($this->request);
-        if (!$validator->validate($validationRules, $inputData)) {
+        if (!$validator->validateData($validationRules, $inputData)) {
             throw new GraphqlError("Validation Error", $validator->errors());
         }
     }
 
-    protected function prepareInputObjectValidationRules(InputObjectType $inputType): array
-    {
-        $rules = [];
-        foreach ($inputType->getFields() as $fieldName => $field) {
-            if (isset($field->description) && !empty($field->description)) {
-                $rules[$fieldName] = $field->description;
-            }
-        }
-        return $rules;
-    }
     protected function resolveAction($finalResolver, array $params)
     {
         if ($finalResolver instanceof \Closure) {
