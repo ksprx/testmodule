@@ -3,6 +3,7 @@
 
 namespace App\Core\GraphQL;
 
+use App\Core\GraphQL\Schema\SchemaManager;
 use App\Core\Request\Request;
 use GraphQL\Error\DebugFlag;
 use GraphQL\Error\Error;

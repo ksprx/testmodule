@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\GraphQL;
+namespace App\Core\GraphQL\Schema;
 
 use App\Core\Application\Application;
 use App\Core\Exceptions\GraphqlError;

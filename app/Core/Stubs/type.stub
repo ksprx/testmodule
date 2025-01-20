@@ -3,7 +3,7 @@
 namespace {{namespace}};
 
 use App\Core\Facades\Graphql;
-use App\Core\GraphQL\BaseType;
+use App\Core\GraphQL\Type\BaseType;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
 

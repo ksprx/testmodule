@@ -2,9 +2,9 @@
 
 namespace App\Core\Facades;
 
-use App\Core\GraphQL\GraphQLInputTypeBuilder;
-use App\Core\GraphQL\GraphQLTypeBuilder;
-use App\Core\GraphQL\SchemaDefinition;
+use App\Core\GraphQL\Schema\SchemaDefinition;
+use App\Core\GraphQL\Type\GraphQLInputTypeBuilder;
+use App\Core\GraphQL\Type\GraphQLTypeBuilder;
 
 /**
  * @method static SchemaDefinition group(array $options, callable $callback)

@@ -2,6 +2,10 @@
 
 namespace App\Core\GraphQL;
 
+use App\Core\GraphQL\Schema\SchemaDefinition;
+use App\Core\GraphQL\Type\GraphQLInputTypeBuilder;
+use App\Core\GraphQL\Type\GraphQLTypeBuilder;
+
 class Graphql
 {
     protected array $queries = [];
