@@ -44,6 +44,7 @@ class SchemaManager
 
     protected function findModuleSchemas(array $requestedModules): array
     {
+        require_once self::$mainSchemaFile;
         foreach ($requestedModules as $moduleName) {
             $schemaFile = MODULE_PATH . "/$moduleName/GraphQL/Schema.php";
             $this->includeSchema($schemaFile, $moduleName);
@@ -57,8 +58,6 @@ class SchemaManager
             Graphql::group(["prefix" => $moduleName . "_"], function () use ($schemaFile) {
                 require_once $schemaFile;
             });
-        } else {
-            require_once self::$mainSchemaFile;
         }
     }
 
