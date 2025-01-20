@@ -2,6 +2,7 @@
 
 namespace App\Core\GraphQL;
 
+use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
 class SchemaDefinition
@@ -60,7 +61,7 @@ class SchemaDefinition
     public function argument(string $name, Type $type, string|array $validate = []): self
     {
         $this->args[$name] = $type;
-        if ($validate) {
+        if ($validate && !($type instanceof InputObjectType)) {
             $this->validators[$name] = $validate;
         }
         return $this;

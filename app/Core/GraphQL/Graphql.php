@@ -62,7 +62,17 @@ class Graphql
         $this->types[] = $type;
         return $type;
     }
-
+    /**
+     * Define a input type
+     *
+     * @param string $name
+     * @param string $description
+     * @return GraphQLInputTypeBuilder
+     */
+    public static function inputType(string $name, string $description = ''): GraphQLInputTypeBuilder
+    {
+        return new GraphQLInputTypeBuilder($name, $description);
+    }
     /**
      * Define a mutation with a resolver
      *

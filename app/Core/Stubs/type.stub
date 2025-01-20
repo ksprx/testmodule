@@ -4,12 +4,12 @@ namespace {{namespace}};
 
 use App\Core\Facades\Graphql;
 use App\Core\GraphQL\BaseType;
+use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
 
 class {{typeName}} extends BaseType
 {
-    protected static function defineType(): ObjectType
+    protected static function defineType(): ObjectType|InputObjectType
     {
         /*   return GraphqlType Object  */
     }

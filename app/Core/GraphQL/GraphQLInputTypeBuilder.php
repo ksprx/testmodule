@@ -2,29 +2,29 @@
 
 namespace App\Core\GraphQL;
 
-use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
-class GraphQLTypeBuilder extends BaseTypeBuilder
+class GraphQLInputTypeBuilder extends BaseTypeBuilder
 {
     /**
      * Add field
      *
      * @param string $name
      * @param Type $type
-     * @param String $description
+     * @param string|array $validator
      * @return $this
      */
-    public function addField(string $name, Type $type, string|array $description = ''): static
+    public function addField(string $name, Type $type, string|array $validator = ''): static
     {
         $this->config['fields'][$name] = [
             'type' => $type,
-            'description' => $description
+            'description' => $validator,
         ];
         return $this;
     }
 
-    public function build() : ObjectType
+    public function build(): InputObjectType
     {
         if (!isset($this->config['name'])) {
             throw new \Exception("The 'name' property is required to build a GraphQL type.");
@@ -34,6 +34,7 @@ class GraphQLTypeBuilder extends BaseTypeBuilder
             throw new \Exception("The 'fields' property must be defined with at least one field.");
         }
 
-        return new ObjectType($this->config);
+        return new InputObjectType($this->config);
     }
+
 }

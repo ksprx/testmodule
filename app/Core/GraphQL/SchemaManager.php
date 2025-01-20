@@ -9,6 +9,7 @@ use App\Core\Pipeline\Pipeline;
 use App\Core\Request\Request;
 use App\Core\Validation\Validator;
 use App\Http\Services\DependencyResolver;
+use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\ObjectType;
 
 class SchemaManager
@@ -101,6 +102,14 @@ class SchemaManager
 
     protected function afterMiddleware(array $fieldConfig, array $params)
     {
+        if (isset($fieldConfig['args']) && is_array($fieldConfig['args'])) {
+            foreach ($fieldConfig['args'] as $argName => $argConfig) {
+                if ($argConfig instanceof InputObjectType) {
+                    $this->validateInputObject($argConfig, $params['args'][$argName] ?? []);
+                }
+            }
+        }
+
         if ($fieldConfig['validators'] ?? false) {
             $this->validate($fieldConfig['validators']);
         }
@@ -108,6 +117,7 @@ class SchemaManager
         $finalResolver = $fieldConfig['resolve'] ?? null;
         return $this->resolveAction($finalResolver, $params);
     }
+
 
     protected function validate(array $validators): void
     {
@@ -117,7 +127,25 @@ class SchemaManager
             throw new GraphqlError("Validation Error", $validator->errors());
         }
     }
+    protected function validateInputObject(InputObjectType $inputType, array $inputData): void
+    {
+        $validationRules = $this->prepareInputObjectValidationRules($inputType);
+        $validator = new Validator($this->request);
+        if (!$validator->validate($validationRules, $inputData)) {
+            throw new GraphqlError("Validation Error", $validator->errors());
+        }
+    }
 
+    protected function prepareInputObjectValidationRules(InputObjectType $inputType): array
+    {
+        $rules = [];
+        foreach ($inputType->getFields() as $fieldName => $field) {
+            if (isset($field->description) && !empty($field->description)) {
+                $rules[$fieldName] = $field->description;
+            }
+        }
+        return $rules;
+    }
     protected function resolveAction($finalResolver, array $params)
     {
         if ($finalResolver instanceof \Closure) {
