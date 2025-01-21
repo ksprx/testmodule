@@ -37,7 +37,7 @@ class SchemaManager
     public function loadSchemas(Request $request): array
     {
         $this->request = $request;
-        $requestedModules = array_map('strtolower', $this->extractModulesFromQuery());
+        $requestedModules = array_map('ucwords', $this->extractModulesFromQuery());
         $schemas = $this->findModuleSchemas($requestedModules);
         return $this->buildObjectTypes($schemas);
     }
