@@ -34,6 +34,10 @@ class Router
         if ($prefix) {
             $path = $prefix . $path;
         }
+        $suffix = $this->groupSettings['suffix'] ?? '';
+        if ($suffix) {
+            $path = $path . $suffix;
+        }
         $this->routes->insert($method . ':' . $path, $path, $callback, $middlewares);
     }
 
@@ -91,10 +95,19 @@ class Router
         return $this;
     }
 
+    public function suffix(string $suffix)
+    {
+        $this->groupSettings['suffix'] = str_starts_with($suffix, '/') ? $suffix : '/' . $suffix;
+        return $this;
+    }
+
     public function group(array $settings, callable $callback)
     {
         if (isset($settings['prefix'])) {
             $settings['prefix'] = str_starts_with($settings['prefix'], '/') ? $settings['prefix'] : '/' . $settings['prefix'];
+        }
+        if (isset($settings['suffix'])) {
+            $settings['suffix'] = str_starts_with($settings['suffix'], '/') ? $settings['suffix'] : '/' . $settings['suffix'];
         }
         $previousSettings = $this->groupSettings;
         $this->groupSettings = array_merge($this->groupSettings, $settings);
@@ -122,7 +135,7 @@ class Router
 
             foreach ($route['middlewares'] as $middleware) {
                 $middlewareInstance = $this->resolver->resolve($middleware);
-                $response = $middlewareInstance->handle($request, function(Request $request) use ($action, $params) {
+                $response = $middlewareInstance->handle($request, function (Request $request) use ($action, $params) {
                     if ($action instanceof \Closure) {
                         return $this->invokeAction($action, $params);
                     }
