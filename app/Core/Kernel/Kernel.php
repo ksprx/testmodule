@@ -3,6 +3,7 @@
 namespace App\Core\Kernel;
 
 
+use App\Core\Facades\Router;
 use App\Core\GraphQL\GraphQLHandler;
 use App\Core\Pipeline\Pipeline;
 use App\Core\Request\Request;
@@ -36,6 +37,19 @@ class Kernel
             return $this->makeResponse($response);
         }
 
+        $route = Router::findCurrentRoute($request);
+
+        if ($route) {
+            $pipeline = new Pipeline();
+            $response = $pipeline->send($request)
+                ->through($this->globalMiddlewares)
+                ->then(function ($request) {
+                    return $this->handleRouteMiddlewares($request);
+                });
+
+            return $this->makeResponse($response);
+        }
+
         return $this->defaultResponse();
     }
 
@@ -44,6 +58,17 @@ class Kernel
         $graphqlHandler = new GraphQLHandler($request);
         $result = $graphqlHandler->handle($request->graphqlQuery(), $request->graphqlVariables());
         return $this->makeResponse($result);
+    }
+    protected function handleRouteMiddlewares(Request $request)
+    {
+        $routeMiddlewares = Router::getMiddlewares() ?? [];
+
+        $pipeline = new Pipeline();
+        return $pipeline->send($request)
+            ->through($routeMiddlewares)
+            ->then(function ($request) {
+                return Router::dispatch($request) ?? $this->defaultResponse();
+            });
     }
 
     protected function makeResponse($content, $code = Response::HTTP_OK): Response

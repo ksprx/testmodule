@@ -8,6 +8,9 @@ class Request
 {
     protected ?string $graphqlQuery = null;
     protected array $graphqlVariables = [];
+
+    protected array $query = [];
+    protected array $data = [];
     protected array $headers;
     protected string $method;
     protected string $path;
@@ -20,6 +23,10 @@ class Request
         $input = $this->getJsonInput();
         $this->graphqlQuery = $input['query'] ?? null;
         $this->graphqlVariables = $input['variables'] ?? [];
+
+        $data = $input ? array_merge($_POST, $input) : $_POST;
+        $this->data = $data;
+        $this->query = $_GET ?? [];
 
         $this->headers = getallheaders();
         $this->method = $_SERVER['REQUEST_METHOD'];
@@ -118,15 +125,11 @@ class Request
         return $args[$key] ?? $default;
     }
 
-    protected function extractArgumentsFromQuery(): array
+    public function query($key, $default = null)
     {
-        if ($this->isGraphQLRequest()) {
-            preg_match_all('/(\w+)\s*:\s*([^,}]+)/', $this->graphqlQuery, $matches);
-            return array_map('trim', array_combine($matches[1], $matches[2]));
-        }
-
-        return [];
+        return $this->query[$key] ?? $default;
     }
+
 
     protected function makeValidator(): Validator
     {

@@ -7,4 +7,5 @@ return [
     \App\Http\Providers\CacheServiceProvider::class,
     \App\Http\Providers\FileManagerServiceProvider::class,
     \App\Http\Providers\GraphqlServiceProvider::class,
+    \App\Http\Providers\RouterServiceProvider::class,
 ];
