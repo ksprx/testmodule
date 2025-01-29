@@ -62,12 +62,31 @@ class RadixNode
                 }
             }
         }
-        if (isset($currentNode->methods[$method])) {
-            return [
-                'callback' => $currentNode->methods[$method]['callback'],
-                'middlewares' => $currentNode->methods[$method]['middlewares'],
-                'params' => $params,
-            ];
+
+        foreach ($currentNode->methods as $storedMethod => $data) {
+            $storedPath = explode(':', $storedMethod, 2)[1] ?? '';
+            $storedSegments = $this->splitPath($storedPath);
+
+            if (count($segments) === count($storedSegments)) {
+                $match = true;
+                foreach ($storedSegments as $index => $storedSegment) {
+                    if ($this->isDynamicSegment($storedSegment)) {
+                        continue;
+                    }
+                    if ($storedSegment !== $segments[$index]) {
+                        $match = false;
+                        break;
+                    }
+                }
+
+                if ($match) {
+                    return [
+                        'callback' => $data['callback'],
+                        'middlewares' => $data['middlewares'],
+                        'params' => $params,
+                    ];
+                }
+            }
         }
 
         return null;

@@ -127,12 +127,10 @@ class Router
         $routeKey = $method . ':' . $path;
 
         $route = $this->routes->search($routeKey, $path);
-
         if ($route) {
             $this->currentRoute = $route;
-            $params = $this->extractRouteParameters();
+            $params = $route['params'];
             $action = $route['callback'];
-
             foreach ($route['middlewares'] as $middleware) {
                 $middlewareInstance = $this->resolver->resolve($middleware);
                 $response = $middlewareInstance->handle($request, function (Request $request) use ($action, $params) {
