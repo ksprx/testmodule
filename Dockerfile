@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 # نصب وابستگی‌های سیستم
 RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
@@ -37,6 +37,7 @@ RUN chmod -R 755 /var/www/html
 
 # نصب وابستگی‌های Composer
 WORKDIR /var/www/html
+COPY runflare .env
 RUN php /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-grpc --ignore-platform-req=ext-redis
 
 # تنظیم دایرکتوری کار به public
