@@ -59,7 +59,22 @@ class SmsController extends Controller
     {
         $data["sender"] = self::SMS_SENDER;
         if (isset($data["message"])) $data["message"] = urlencode($data["message"]);
-        $client = new Client();
+        $client = new Client([
+            'verify' => true,
+            'stream_context_options' => [
+                'ssl' => [
+                    'session_cache_mode' => STREAM_CRYPTO_METHOD_TLS_CLIENT,
+                    'session_cache_limit' => 100,
+                    'session_cache_ttl' => 3600,
+                ],
+            ],
+            'allow_dns_cache' => true,
+            'dns_cache_ttl' => 3600,
+            'headers' => [
+                'Connection' => 'keep-alive',
+            ],
+            'force_http2' => true,
+        ]);
         $base = explode("/", $method);
         try {
             $request = $client->get("https://api.kavenegar.com/v1/" . self::SMS_API_KEY . "/{$base[0]}/{$base[1]}.json", [
