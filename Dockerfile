@@ -1,5 +1,5 @@
 FROM php:8.3.6-apache
-
+RUN ls -l /
 # نصب وابستگی‌های سیستم
 RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
     libz-dev \
@@ -11,8 +11,6 @@ RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
 
 # نصب اکستنشن‌های PHP
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
-# تعریف متغیر PHP_API_VERSION
-# تعریف متغیر PHP_API_VERSION
 
 # دایرکتوری مقصد برای اکستنشن‌ها
 ENV EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20230831
