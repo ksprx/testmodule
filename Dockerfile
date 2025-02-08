@@ -4,6 +4,7 @@ RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
     libz-dev \
     libpq-dev \
     libssl-dev \
+    libc-dev \
     git \
     unzip \
     && rm -rf /var/lib/apt/lists/*
