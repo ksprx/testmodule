@@ -18,9 +18,10 @@ RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 ENV EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20230831
 
 # بررسی وجود فایل‌های .so و کپی کردن اگر موجود نبود
-RUN ls -l /
 RUN php -v
 RUN php --ini
+RUN ls -l /
+
 # فعال‌سازی اکستنشن‌ها
 # فعال‌سازی اکستنشن‌ها (فایل‌های .so از طریق Volume وارد می‌شوند)
 RUN docker-php-ext-enable redis grpc
