@@ -12,7 +12,6 @@ RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
 ENV EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20230831
 
-RUN docker-php-ext-enable redis grpc
 
 RUN a2enmod rewrite
 
@@ -30,7 +29,6 @@ RUN chmod -R 755 /var/www/html
 # نصب وابستگی‌های Composer
 WORKDIR /var/www/html
 COPY runflare .env
-RUN php /usr/local/bin/composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-grpc --ignore-platform-req=ext-redis
 
 # تنظیم دایرکتوری کار به public
 WORKDIR /var/www/html/public
