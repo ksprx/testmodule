@@ -1,4 +1,4 @@
-FROM php:8.3-apache
+FROM php:8.3.6-apache
 
 # نصب وابستگی‌های سیستم
 RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
@@ -10,13 +10,20 @@ RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # نصب اکستنشن‌های PHP
-RUN docker-php-ext-install pdo pdo_mysql mysqli pdo_pgsql
+RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
+# تعریف متغیر PHP_API_VERSION
+# تعریف متغیر PHP_API_VERSION
 
-# نصب و فعال‌سازی redis
-RUN pecl install redis && docker-php-ext-enable redis
+# دایرکتوری مقصد برای اکستنشن‌ها
+ENV EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20230831
 
-# نصب و فعال‌سازی grpc
-RUN pecl install grpc && docker-php-ext-enable grpc
+# بررسی وجود فایل‌های .so و کپی کردن اگر موجود نبود
+RUN ls -l /
+RUN php -v
+RUN php --ini
+# فعال‌سازی اکستنشن‌ها
+# فعال‌سازی اکستنشن‌ها (فایل‌های .so از طریق Volume وارد می‌شوند)
+RUN docker-php-ext-enable redis grpc
 
 # فعال‌سازی mod_rewrite برای Apache
 RUN a2enmod rewrite
