@@ -1,6 +1,5 @@
 FROM php:8.3.6-apache
-RUN ls -l /
-# نصب وابستگی‌های سیستم
+
 RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
     libz-dev \
     libpq-dev \
@@ -9,27 +8,18 @@ RUN apt-get clean && apt-get update --fix-missing && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# نصب اکستنشن‌های PHP
 RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql
 
-# دایرکتوری مقصد برای اکستنشن‌ها
 ENV EXTENSION_DIR=/usr/local/lib/php/extensions/no-debug-non-zts-20230831
 
-
-# فعال‌سازی اکستنشن‌ها
-# فعال‌سازی اکستنشن‌ها (فایل‌های .so از طریق Volume وارد می‌شوند)
 RUN docker-php-ext-enable redis grpc
 
-# فعال‌سازی mod_rewrite برای Apache
 RUN a2enmod rewrite
 
-# نصب Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# کپی فایل‌های پروژه
 COPY . /var/www/html/
 
-# کپی تنظیمات Apache
 COPY apache.conf /etc/apache2/sites-available/000-default.conf
 RUN a2ensite 000-default.conf
 
